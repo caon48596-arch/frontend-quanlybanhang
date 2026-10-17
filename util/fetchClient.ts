@@ -10,7 +10,7 @@ export const fetchClient = async (endpoint: string, options: RequestInit = {}) =
     };
 
     // 3. Gọi sang Spring Boot (cổng 8081)
-    const response = await fetch(`http://localhost:8081/api${endpoint}`, {
+    const response = await fetch(`https://project1-production-6826.up.railway.app/api${endpoint}`, {
         cache: 'no-store',
         ...options,
         headers
@@ -90,7 +90,7 @@ export const getUserNameFromToken = (): string | null => {
 export const getValidMediaUrl = (url: string | undefined): string => {
     if (!url || url.trim() === '') return '';
     let cleanUrl = url.trim();
-    
+
     // Nếu là base64 thì giữ nguyên
     if (cleanUrl.startsWith('data:')) return cleanUrl;
 
@@ -98,7 +98,7 @@ export const getValidMediaUrl = (url: string | undefined): string => {
     if (cleanUrl.startsWith('//')) return `https:${cleanUrl}`;
 
     // Nếu là đường dẫn tương đối từ backend
-    if (cleanUrl.startsWith('/')) return `http://localhost:8081${cleanUrl}`;
+    if (cleanUrl.startsWith('/')) return `https://project1-production-6826.up.railway.app${cleanUrl}`;
 
     // Nếu không có http/https, thêm https mặc định
     if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {

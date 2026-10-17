@@ -7,7 +7,7 @@ function VerifyOtpContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const action = searchParams.get('action'); // 'login' or 'register'
-    
+
     const [identifier, setIdentifier] = useState('');
     const [otp, setOtp] = useState('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,7 +38,7 @@ function VerifyOtpContent() {
         setError(null);
         setSuccessMessage(null);
         try {
-            const response = await fetch('http://localhost:8081/api/users/request-otp', {
+            const response = await fetch('https://project1-production-6826.up.railway.app/api/users/request-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: identifier, type: action === 'register' ? 'REGISTER' : 'LOGIN' })
@@ -74,12 +74,12 @@ function VerifyOtpContent() {
                     otp: otp
                 };
 
-                const response = await fetch('http://localhost:8081/api/users/register', {
+                const response = await fetch('https://project1-production-6826.up.railway.app/api/users/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                
+
                 const text = await response.text();
                 const data = text ? JSON.parse(text) : {};
 
@@ -99,7 +99,7 @@ function VerifyOtpContent() {
                     otp: otp
                 };
 
-                const response = await fetch('http://localhost:8081/api/users/login-otp', {
+                const response = await fetch('https://project1-production-6826.up.railway.app/api/users/login-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -115,7 +115,7 @@ function VerifyOtpContent() {
                 if (data.data && data.data.token) {
                     sessionStorage.setItem('accessToken', data.data.token);
                     sessionStorage.removeItem('pendingAuthData');
-                    
+
                     const token = data.data.token;
                     try {
                         const base64Url = token.split('.')[1];
@@ -152,7 +152,7 @@ function VerifyOtpContent() {
         <div className="min-h-[calc(100vh-64px)] bg-gray-50 flex items-center justify-center p-4">
             <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border">
                 <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Xác thực OTP</h2>
-                
+
                 <p className="text-sm text-gray-600 mb-6 text-center">
                     Mã xác thực đã được gửi, vui lòng kiểm tra hộp thư của bạn.
                 </p>

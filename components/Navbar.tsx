@@ -57,7 +57,7 @@ export default function Navbar() {
         setIsSettingsOpen(true);
         if (userName) {
             try {
-                const res = await fetch(`http://localhost:8081/api/users/profile?email=${userName}`);
+                const res = await fetch(`https://project1-production-6826.up.railway.app/api/users/profile?email=${userName}`);
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.data) {
@@ -79,7 +79,7 @@ export default function Navbar() {
         setIsUpdatingSettings(true);
         try {
             const token = sessionStorage.getItem('accessToken');
-            const res = await fetch('http://localhost:8081/api/users/update', {
+            const res = await fetch('https://project1-production-6826.up.railway.app/api/users/update', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,48 +116,48 @@ export default function Navbar() {
                         LUXE
                     </Link>
 
-                {/* Links */}
-                <div className="hidden md:flex items-center gap-8 font-medium text-slate-700">
-                    <Link 
-                        href="/" 
-                        className={`transition-colors ${pathname === '/' ? 'text-emerald-800 border-b-2 border-emerald-800 pb-1 font-semibold' : 'hover:text-emerald-800 pb-1 border-b-2 border-transparent'}`}
-                    >
-                        Trang chủ
-                    </Link>
-                    {(userRole === 'ROLE_ADMIN' || userRole === 'ADMIN') && (
-                        <>
-                            <Link 
-                                href="/products/create" 
-                                className={`transition-colors ${pathname === '/products/create' ? 'text-emerald-800 border-b-2 border-emerald-800 pb-1 font-semibold' : 'hover:text-emerald-800 pb-1 border-b-2 border-transparent'}`}
-                            >
-                                Thêm sản phẩm
-                            </Link>
-                            <Link 
-                                href="/admin" 
-                                className={`transition-colors ${pathname.startsWith('/admin') ? 'text-emerald-800 border-b-2 border-emerald-800 pb-1 font-semibold' : 'hover:text-emerald-800 pb-1 border-b-2 border-transparent'}`}
-                            >
-                                Quản lý & Doanh thu
-                            </Link>
-                        </>
-                    )}
+                    {/* Links */}
+                    <div className="hidden md:flex items-center gap-8 font-medium text-slate-700">
+                        <Link
+                            href="/"
+                            className={`transition-colors ${pathname === '/' ? 'text-emerald-800 border-b-2 border-emerald-800 pb-1 font-semibold' : 'hover:text-emerald-800 pb-1 border-b-2 border-transparent'}`}
+                        >
+                            Trang chủ
+                        </Link>
+                        {(userRole === 'ROLE_ADMIN' || userRole === 'ADMIN') && (
+                            <>
+                                <Link
+                                    href="/products/create"
+                                    className={`transition-colors ${pathname === '/products/create' ? 'text-emerald-800 border-b-2 border-emerald-800 pb-1 font-semibold' : 'hover:text-emerald-800 pb-1 border-b-2 border-transparent'}`}
+                                >
+                                    Thêm sản phẩm
+                                </Link>
+                                <Link
+                                    href="/admin"
+                                    className={`transition-colors ${pathname.startsWith('/admin') ? 'text-emerald-800 border-b-2 border-emerald-800 pb-1 font-semibold' : 'hover:text-emerald-800 pb-1 border-b-2 border-transparent'}`}
+                                >
+                                    Quản lý & Doanh thu
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex items-center gap-6">
                     <div className="relative hidden sm:block">
-                        <input 
-                            type="text" 
-                            placeholder="Tìm kiếm..." 
-                            className="pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500 w-64 text-sm text-slate-700 placeholder-slate-400 transition-all hover:bg-white" 
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm..."
+                            className="pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500 w-64 text-sm text-slate-700 placeholder-slate-400 transition-all hover:bg-white"
                         />
                         <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                     </div>
-                    
+
                     {/* Cart Dropdown wrapper */}
                     {userRole !== 'ROLE_ADMIN' && userRole !== 'ADMIN' && (
                         <div className="relative">
-                            <button 
+                            <button
                                 className="text-slate-700 hover:text-emerald-800 relative transition-colors flex items-center justify-center p-2"
                                 onClick={() => setIsCartOpen(!isCartOpen)}
                             >
@@ -168,7 +168,7 @@ export default function Navbar() {
                                     </span>
                                 )}
                             </button>
-                            
+
                             {/* Dropdown Menu */}
                             {isCartOpen && (
                                 <div className="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-50">
@@ -178,7 +178,7 @@ export default function Navbar() {
                                             {cartCount} sản phẩm
                                         </span>
                                     </div>
-                                    
+
                                     <div className="max-h-64 overflow-y-auto p-2">
                                         {cartItems.length === 0 ? (
                                             <p className="text-center text-slate-500 py-8 text-sm">Giỏ hàng trống.</p>
@@ -187,10 +187,10 @@ export default function Navbar() {
                                                 <div key={item.id} className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg group">
                                                     <div className="w-16 h-16 bg-white border border-slate-100 rounded-lg overflow-hidden flex-shrink-0 p-1 flex items-center justify-center">
                                                         {item.imageUrl ? (
-                                                            <img 
-                                                                src={item.imageUrl} 
-                                                                alt={item.name} 
-                                                                className="w-full h-full object-contain mix-blend-multiply" 
+                                                            <img
+                                                                src={item.imageUrl}
+                                                                alt={item.name}
+                                                                className="w-full h-full object-contain mix-blend-multiply"
                                                                 onError={(e) => {
                                                                     (e.target as HTMLImageElement).src = 'https://via.placeholder.com/100x100?text=Lỗi';
                                                                 }}
@@ -204,10 +204,10 @@ export default function Navbar() {
                                                         <p className="text-xs text-emerald-700 font-bold mb-1">
                                                             {new Intl.NumberFormat('vi-VN').format(item.price)}đ
                                                         </p>
-                                                        
+
                                                         {/* Bộ đếm số lượng */}
                                                         <div className="flex items-center bg-slate-100 rounded border border-slate-200 w-fit">
-                                                            <button 
+                                                            <button
                                                                 onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, item.quantity - 1); }}
                                                                 disabled={item.quantity <= 1}
                                                                 className="px-1.5 py-0.5 text-slate-500 hover:text-slate-700 hover:bg-slate-200 disabled:opacity-50 transition-colors"
@@ -217,7 +217,7 @@ export default function Navbar() {
                                                             <span className="text-xs font-semibold px-2 min-w-[20px] text-center">
                                                                 {item.quantity}
                                                             </span>
-                                                            <button 
+                                                            <button
                                                                 onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, item.quantity + 1); }}
                                                                 className="px-1.5 py-0.5 text-slate-500 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                                                             >
@@ -225,7 +225,7 @@ export default function Navbar() {
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <button 
+                                                    <button
                                                         onClick={() => removeFromCart(item.id)}
                                                         className="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded p-1 transition-all"
                                                         title="Xóa"
@@ -236,7 +236,7 @@ export default function Navbar() {
                                             ))
                                         )}
                                     </div>
-                                    
+
                                     {cartItems.length > 0 && (
                                         <div className="p-4 border-t border-slate-100 bg-white">
                                             <div className="flex justify-between items-center mb-4">
@@ -245,8 +245,8 @@ export default function Navbar() {
                                                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cartTotal)}
                                                 </span>
                                             </div>
-                                            <Link 
-                                                href="/orders" 
+                                            <Link
+                                                href="/orders"
                                                 onClick={() => setIsCartOpen(false)}
                                                 className="block w-full text-center bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2.5 rounded-lg transition-colors"
                                             >
@@ -258,7 +258,7 @@ export default function Navbar() {
                             )}
                         </div>
                     )}
-                    
+
                     {/* User */}
                     {isLoggedIn ? (
                         <div className="relative group">
@@ -267,8 +267,8 @@ export default function Navbar() {
                             </button>
                             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                                 <div className="px-4 py-2 border-b border-gray-50 text-sm text-gray-500 font-semibold">
-                                    {userRole === 'ROLE_ADMIN' || userRole === 'ADMIN' 
-                                        ? `Xin chào, Admin ${userName || ''}` 
+                                    {userRole === 'ROLE_ADMIN' || userRole === 'ADMIN'
+                                        ? `Xin chào, Admin ${userName || ''}`
                                         : `Xin chào, Client ${userName || ''}`}
                                 </div>
                                 <Link
@@ -303,12 +303,12 @@ export default function Navbar() {
                     )}
                 </div>
             </div>
-            
+
             {/* Overlay to close cart when clicking outside */}
             {isCartOpen && (
-                <div 
-                    className="fixed inset-0 z-40" 
-                    onClick={() => setIsCartOpen(false)} 
+                <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsCartOpen(false)}
                 />
             )}
 
@@ -363,9 +363,8 @@ export default function Navbar() {
                                 <button
                                     type="submit"
                                     disabled={isUpdatingSettings}
-                                    className={`flex-1 py-2.5 rounded-lg font-bold text-white transition-all shadow-md ${
-                                        isUpdatingSettings ? 'bg-emerald-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'
-                                    }`}
+                                    className={`flex-1 py-2.5 rounded-lg font-bold text-white transition-all shadow-md ${isUpdatingSettings ? 'bg-emerald-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'
+                                        }`}
                                 >
                                     {isUpdatingSettings ? 'Đang lưu...' : 'Lưu'}
                                 </button>
