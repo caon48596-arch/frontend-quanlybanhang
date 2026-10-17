@@ -70,7 +70,7 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-gray-800">Tổng quan hệ thống</h2>
-      
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, idx) => {
@@ -91,33 +91,33 @@ export default function AdminDashboard() {
 
       {/* Charts Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-8">
-         <h3 className="text-lg font-bold text-gray-800 mb-6">Doanh số theo ngày</h3>
-         <div className="h-[350px] w-full">
-           {chartData.length > 0 ? (
-             <ResponsiveContainer width="100%" height="100%">
-               <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} dy={10} />
-                 <YAxis 
-                   axisLine={false} 
-                   tickLine={false} 
-                   tick={{fill: '#64748b', fontSize: 12}}
-                   tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`}
-                 />
-                 <Tooltip 
-                   cursor={{fill: '#f8fafc'}}
-                   formatter={(value: number) => [`${value.toLocaleString()} ₫`, 'Doanh thu']}
-                   contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
-                 />
-                 <Bar dataKey="Revenue" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={50} />
-               </BarChart>
-             </ResponsiveContainer>
-           ) : (
-             <div className="w-full h-full flex items-center justify-center text-gray-400">
-               Chưa có dữ liệu doanh thu
-             </div>
-           )}
-         </div>
+        <h3 className="text-lg font-bold text-gray-800 mb-6">Doanh số theo ngày</h3>
+        <div className="h-[350px] w-full">
+          {chartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dy={10} />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#64748b', fontSize: 12 }}
+                  tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`}
+                />
+                <Tooltip
+                  cursor={{ fill: '#f8fafc' }}
+                  formatter={(value) => [`${Number(value ?? 0).toLocaleString()} ₫`, 'Doanh thu'] as [string, string]}
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                />
+                <Bar dataKey="Revenue" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={50} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-400">
+              Chưa có dữ liệu doanh thu
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Recent Activity */}
@@ -153,11 +153,10 @@ export default function AdminDashboard() {
                       {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.totalAmount || 0)}
                     </td>
                     <td className="py-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                        order.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700' :
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${order.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700' :
                         order.status === 'CANCELLED' ? 'bg-red-100 text-red-700' :
-                        'bg-amber-100 text-amber-700'
-                      }`}>
+                          'bg-amber-100 text-amber-700'
+                        }`}>
                         {order.status === 'APPROVED' ? 'Đã Duyệt' : order.status === 'CANCELLED' ? 'Đã Hủy' : 'Chờ Duyệt'}
                       </span>
                     </td>
