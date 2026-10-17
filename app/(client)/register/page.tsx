@@ -14,9 +14,35 @@ export default function RegisterPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+
+    //     if (formData.password !== formData.confirmPassword) {
+    //         setError('Mật khẩu xác nhận không khớp.');
+    //         return;
+    //     }
+
+    //     setIsLoading(true);
+    //     setError(null);
+
+    //     // Lưu thông tin đăng ký vào session và chuyển hướng tới trang xác nhận OTP
+    //     sessionStorage.setItem('pendingAuthData', JSON.stringify({
+    //         username: formData.username,
+    //         email: formData.email,
+    //         password: formData.password
+    //     }));
+
+    //     setIsLoading(false);
+    //     router.push('/verify-otp?action=register');
+    // };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
+        if (!formData.username.trim() || !formData.email.trim() || !formData.password) {
+            setError('Vui lòng nhập đầy đủ thông tin.');
+            return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
             setError('Mật khẩu xác nhận không khớp.');
             return;
@@ -25,15 +51,49 @@ export default function RegisterPage() {
         setIsLoading(true);
         setError(null);
 
-        // Lưu thông tin đăng ký vào session và chuyển hướng tới trang xác nhận OTP
-        sessionStorage.setItem('pendingAuthData', JSON.stringify({
-            username: formData.username,
-            email: formData.email,
-            password: formData.password
-        }));
-        
-        setIsLoading(false);
-        router.push('/verify-otp?action=register');
+        try {
+            const response = await fetch(
+                'https://project1-production-6826.up.railway.app/api/users/register',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: formData.username.trim(),
+                        email: formData.email.trim(),
+                        password: formData.password,
+                    }),
+                }
+            );
+
+            let data: { message?: string; error?: string } = {};
+
+            try {
+                data = await response.json();
+            } catch {
+                // Phản hồi không có JSON
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message || data.error || 'Đăng ký thất bại.'
+                );
+            }
+
+            sessionStorage.removeItem('pendingAuthData');
+
+            // Đăng ký thành công, chuyển về trang đăng nhập
+            router.push('/login');
+        } catch (err) {
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : 'Không thể kết nối máy chủ.'
+            );
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
